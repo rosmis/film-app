@@ -13,5 +13,11 @@ declare module '@vue/runtime-core' {
     Navbar: typeof import('./src/components/Navbar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    UiLevel: typeof import('./src/components/ui/UiLevel.vue')['default']
+    UiLoader: typeof import('./src/components/ui/UiLoader.vue')['default']
+    UiPage: typeof import('./src/components/ui/UiPage.vue')['default']
+    UiProfilePicture: typeof import('./src/components/ui/UiProfilePicture.vue')['default']
+    UiTitle: typeof import('./src/components/ui/UiTitle.vue')['default']
+    UiWrapper: typeof import('./src/components/ui/UiWrapper.vue')['default']
   }
 }
