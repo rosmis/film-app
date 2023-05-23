@@ -1,12 +1,13 @@
 <template>
     <div
-        class="py-4 px-8"
+        class="p-4"
         :class="[
             {
                 'container mx-auto': container === true,
             },
             {
                 'bg-white': color === 'white',
+                'bg-[110d0f]': color === 'dark',
                 'rounded-3xl': rounded === true,
             },
             {
