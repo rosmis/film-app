@@ -1,5 +1,5 @@
 <template>
-    <div class="flex-grow flex relative items-center">
+    <div class="flex relative items-center">
         <ui-level
             class="border-[#dfdaae] rounded-full border-2 px-4"
             space="sm"

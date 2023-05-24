@@ -1,16 +1,34 @@
 <template>
     <ui-wrapper container>
         <ui-level class="flex-col" vertical-align="top" space="lg">
-            <ui-input
-                v-model="search"
-                placeholder="Rechercher..."
-                class="w-1/2"
-            />
+            <ui-level class="w-full" align="left">
+                <ui-input v-model="search" placeholder="Rechercher..." />
 
-            <template v-if="initialMovies">
+                <ui-button
+                    @click="
+                        selectedFilterType =
+                            selectedFilterType === 'popular'
+                                ? 'top_rated'
+                                : 'popular'
+                    "
+                >
+                    <template #icon>
+                        <StarOutline v-if="selectedFilterType === 'popular'" />
+                        <AnalyticsOutline v-else />
+                    </template>
+
+                    {{
+                        selectedFilterType === "popular"
+                            ? "Trier par la meilleure note"
+                            : "Trier par popularité"
+                    }}
+                </ui-button>
+            </ui-level>
+
+            <template v-if="filteredMovies">
                 <div class="w-full grid gap-8 grid-cols-4">
                     <MovieCard
-                        v-for="(movie, index) in initialMovies"
+                        v-for="(movie, index) in filteredMovies"
                         :key="`movie-${index}`"
                         :movie="movie"
                     />
@@ -23,9 +41,10 @@
 </template>
 
 <script lang="ts" setup>
+import { AnalyticsOutline, StarOutline } from "@vicons/ionicons5";
 import { useScroll } from "@vueuse/core";
 import axios from "axios";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useQuery } from "vue-query";
 import { paramsOptions } from "../composables/useParamsOptions";
 
@@ -35,11 +54,13 @@ const page = ref(1);
 const initialMovies = ref<Array<unknown> | undefined>(undefined);
 const { arrivedState } = useScroll(document, { offset: { bottom: 450 } });
 
+const selectedFilterType = ref<"popular" | "top_rated">("popular");
+
 const { data: _movies } = useQuery(
-    ["movies", page],
+    ["movies", [page, selectedFilterType]],
     () =>
         axios.get(
-            `https://api.themoviedb.org/3/movie/popular?page=${page.value}`,
+            `https://api.themoviedb.org/3/movie/${selectedFilterType.value}?page=${page.value}`,
             paramsOptions
         ),
     {
@@ -54,6 +75,16 @@ const { data: _movies } = useQuery(
         },
     }
 );
+
+const filteredMovies = computed(() => {
+    if (!initialMovies.value) return undefined;
+
+    if (!search.value) return initialMovies.value;
+
+    return initialMovies.value.filter((movie) =>
+        movie.title.toLowerCase().includes(search.value)
+    );
+});
 
 watch(
     () => arrivedState.bottom,
