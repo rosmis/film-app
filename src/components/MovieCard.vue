@@ -44,7 +44,7 @@
                     v-if="isCardHovered"
                     class="h-ful text-white w-full relative ellipsis"
                 >
-                    {{ movie.overview }}
+                    {{ truncate(movie.overview, { length: 250 }) }}
                 </p>
             </ui-level>
         </ui-wrapper>
@@ -54,6 +54,7 @@
 <script lang="ts" setup>
 import { CalendarNumberOutline } from "@vicons/ionicons5";
 import { Icon } from "@vicons/utils";
+import { truncate } from "lodash";
 import moment from "moment";
 import { ref } from "vue";
 

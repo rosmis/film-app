@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vueuse/core": "^10.1.2",
     "axios": "^1.4.0",
+    "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "unplugin-vue-components": "^0.24.1",
     "vue": "^3.2.47",
