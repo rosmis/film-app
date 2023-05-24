@@ -9,7 +9,8 @@
                         selectedFilterType =
                             selectedFilterType === 'popular'
                                 ? 'top_rated'
-                                : 'popular'
+                                : 'popular';
+                        page = 1;
                     "
                 >
                     <template #icon>
@@ -36,6 +37,15 @@
             </template>
 
             <ui-loader v-else />
+
+            <MovieDetails
+                v-if="selectedMovieId"
+                :selected-movie-id="selectedMovieId"
+                @close="
+                    selectedMovieId = undefined;
+                    router.push({ name: 'Home', query: {} });
+                "
+            />
         </ui-level>
     </ui-wrapper>
 </template>
@@ -46,17 +56,23 @@ import { useScroll } from "@vueuse/core";
 import axios from "axios";
 import { computed, ref, watch } from "vue";
 import { useQuery } from "vue-query";
+import { useRoute, useRouter } from "vue-router";
 import { paramsOptions } from "../composables/useParamsOptions";
+
+const route = useRoute();
+const router = useRouter();
 
 const search = ref<string>();
 const page = ref(1);
 
 const initialMovies = ref<Array<unknown> | undefined>(undefined);
+const selectedMovieId = ref<number | undefined>(undefined);
+
 const { arrivedState } = useScroll(document, { offset: { bottom: 450 } });
 
 const selectedFilterType = ref<"popular" | "top_rated">("popular");
 
-const { data: _movies } = useQuery(
+useQuery(
     ["movies", [page, selectedFilterType]],
     () =>
         axios.get(
@@ -91,5 +107,10 @@ watch(
     () => {
         if (arrivedState.bottom) page.value++;
     }
+);
+
+watch(
+    () => route.query,
+    () => (selectedMovieId.value = +route.query.movieId)
 );
 </script>

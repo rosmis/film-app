@@ -5,9 +5,10 @@
         class="rounded-xl cursor-pointer transition-shadow ring-1 ring-slate-900/5 ratio aspect-square relative wrapper card hover:shadow-lg"
         @mouseover="isCardHovered = true"
         @mouseleave="isCardHovered = false"
+        @click="router.push({ name: 'Home', query: { movieId: movie.id } })"
     >
         <ui-level
-            class="bg-[#dfdaae] rounded-lg p-2 top-2 left-2 z-10 absolute"
+            class="bg-[#dfdaae] rounded-lg p-2 top-2 left-2 z-5 absolute"
             align="left"
             space="sm"
         >
@@ -57,10 +58,13 @@ import { Icon } from "@vicons/utils";
 import { truncate } from "lodash";
 import moment from "moment";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 defineProps<{
     movie?: any;
 }>();
+
+const router = useRouter();
 
 const isCardHovered = ref(false);
 

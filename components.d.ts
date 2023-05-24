@@ -12,6 +12,7 @@ declare module '@vue/runtime-core' {
     FilmCard: typeof import('./src/components/FilmCard.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     MovieCard: typeof import('./src/components/MovieCard.vue')['default']
+    MovieDetails: typeof import('./src/components/ui/MovieDetails.vue')['default']
     Navbar: typeof import('./src/components/Navbar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
