@@ -11,7 +11,11 @@
             align="left"
             space="sm"
         >
-            <p class="font-bold text-xs text-[#110d0f]">
+            <Icon class="text-xs text-[#110d0f]">
+                <CalendarNumberOutline />
+            </Icon>
+
+            <p class="text-xs text-[#110d0f]">
                 {{ moment(movie.release_date).format("DD/MM/YYYY") }}
             </p>
         </ui-level>
@@ -48,6 +52,8 @@
 </template>
 
 <script lang="ts" setup>
+import { CalendarNumberOutline } from "@vicons/ionicons5";
+import { Icon } from "@vicons/utils";
 import moment from "moment";
 import { ref } from "vue";
 

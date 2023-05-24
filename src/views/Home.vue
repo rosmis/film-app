@@ -16,6 +16,8 @@
                     />
                 </div>
             </template>
+
+            <ui-loader v-else />
         </ui-level>
     </ui-wrapper>
 </template>
