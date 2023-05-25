@@ -41,10 +41,7 @@
                     <p class="text-white">{{ movie.vote_average }} / 10</p>
                 </ui-level>
 
-                <p
-                    v-if="isCardHovered"
-                    class="h-ful text-white w-full relative ellipsis"
-                >
+                <p v-if="isCardHovered" class="h-full text-white w-full">
                     {{ truncate(movie.overview, { length: 250 }) }}
                 </p>
             </ui-level>
@@ -60,9 +57,10 @@ import moment from "moment";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { usePosterUrl } from "../composables/usePosterUrl";
+import { Movie } from "../types/movie";
 
 const props = defineProps<{
-    movie?: any;
+    movie: Movie;
 }>();
 
 const router = useRouter();
@@ -100,10 +98,5 @@ const posterUrl = computed(() => usePosterUrl(props.movie.poster_path));
     position: absolute;
     top: 0;
     left: 0;
-}
-.ellipsis {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: pre-wrap;
 }
 </style>

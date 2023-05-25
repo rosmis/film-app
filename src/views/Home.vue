@@ -63,6 +63,7 @@ import { computed, onMounted, ref, watch } from "vue";
 import { useQuery } from "vue-query";
 import { useRoute, useRouter } from "vue-router";
 import { paramsOptions } from "../composables/useParamsOptions";
+import { Movie } from "../types/movie";
 
 const route = useRoute();
 const router = useRouter();
@@ -74,7 +75,7 @@ onMounted(() => {
 const search = ref<string>();
 const page = ref(1);
 
-const initialMovies = ref<Array<unknown> | undefined>(undefined);
+const initialMovies = ref<Movie[] | undefined>(undefined);
 const selectedMovieId = ref<number | undefined>(undefined);
 
 const { arrivedState } = useScroll(document, { offset: { bottom: 450 } });
@@ -101,13 +102,13 @@ useQuery(
     }
 );
 
-const filteredMovies = computed(() => {
+const filteredMovies = computed<Movie[] | undefined>(() => {
     if (!initialMovies.value) return undefined;
 
     if (!search.value) return initialMovies.value;
 
     return initialMovies.value.filter((movie) =>
-        movie.title.toLowerCase().includes(search.value)
+        movie.title.toLowerCase().includes(search.value!)
     );
 });
 

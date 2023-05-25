@@ -112,6 +112,7 @@ import { useQuery } from "vue-query";
 import { useRoute } from "vue-router";
 import { paramsOptions } from "../composables/useParamsOptions";
 import { usePosterUrl } from "../composables/usePosterUrl";
+import { MovieDetailed } from "../types/movie";
 
 const route = useRoute();
 
@@ -132,7 +133,7 @@ const outsideWrapper = ref<HTMLDivElement>();
 const { data: movieDetail } = useQuery(
     ["movieDetail", selectedMovieId],
     () =>
-        axios.get(
+        axios.get<MovieDetailed>(
             `https://api.themoviedb.org/3/movie/${selectedMovieId.value}`,
             paramsOptions
         ),
