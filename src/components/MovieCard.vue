@@ -25,7 +25,7 @@
             <div
                 class="bg-cover h-full hover"
                 :style="{
-                    backgroundImage: `url(${getPosterUrl(movie.poster_path)})`,
+                    backgroundImage: `url(${posterUrl})`,
                 }"
             ></div>
         </div>
@@ -59,8 +59,9 @@ import { truncate } from "lodash";
 import moment from "moment";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { usePosterUrl } from "../composables/usePosterUrl";
 
-defineProps<{
+const props = defineProps<{
     movie?: any;
 }>();
 
@@ -68,9 +69,7 @@ const router = useRouter();
 
 const isCardHovered = ref(false);
 
-const getPosterUrl = (posterPath: string) => {
-    return `https://image.tmdb.org/t/p/w500${posterPath}`;
-};
+const posterUrl = usePosterUrl(props.movie.poster_path);
 </script>
 
 <style scoped>

@@ -41,6 +41,11 @@
             <MovieDetails
                 v-if="selectedMovieId"
                 :selected-movie-id="selectedMovieId"
+                :popular-movies="
+                    filteredMovies
+                        ?.filter((movie) => movie.id !== selectedMovieId)
+                        .slice(0, 5)
+                "
                 @close="
                     selectedMovieId = undefined;
                     router.push({ name: 'Home', query: {} });
@@ -54,13 +59,17 @@
 import { AnalyticsOutline, StarOutline } from "@vicons/ionicons5";
 import { useScroll } from "@vueuse/core";
 import axios from "axios";
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useQuery } from "vue-query";
 import { useRoute, useRouter } from "vue-router";
 import { paramsOptions } from "../composables/useParamsOptions";
 
 const route = useRoute();
 const router = useRouter();
+
+onMounted(() => {
+    if (route.query.movieId) selectedMovieId.value = +route.query.movieId;
+});
 
 const search = ref<string>();
 const page = ref(1);
