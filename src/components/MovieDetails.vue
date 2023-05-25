@@ -5,6 +5,7 @@
         <div
             screen="art"
             class="bg-gray-800 rounded-t-2xl w-full top-8 right-0 bottom-0 left-0 absolute overflow-y-auto"
+            ref="outsideWrapper"
         >
             <ui-level align="right" class="w-full p-4 top-0 z-30 sticky">
                 <Icon
@@ -28,7 +29,7 @@
                         />
                     </ui-level>
 
-                    <ui-wrapper padded class="h-full w-2/3">
+                    <ui-wrapper class="h-full w-2/3">
                         <ui-level
                             v-if="movieDetail"
                             class="flex-col h-full w-full"
@@ -78,8 +79,12 @@
                     </ui-wrapper>
                 </ui-level>
 
-                <ui-level class="flex-col w-full" vertical-align="top">
-                    <h2 class="font-bold text-lg text-white text-right w-full">
+                <ui-level
+                    class="flex-col w-full"
+                    vertical-align="top"
+                    space="lg"
+                >
+                    <h2 class="font-bold text-xl text-white text-right w-full">
                         Découvrez d'autres films populaires
                     </h2>
 
@@ -99,6 +104,7 @@
 <script lang="ts" setup>
 import { Close } from "@vicons/ionicons5";
 import { Icon } from "@vicons/utils";
+import { onClickOutside } from "@vueuse/core";
 import axios from "axios";
 import moment from "moment";
 import { computed, ref, watch } from "vue";
@@ -120,6 +126,8 @@ const emit = defineEmits<{
 
 const posterUrl = ref<string | undefined>(undefined);
 const selectedMovieId = ref<number>(props.selectedMovieId);
+
+const outsideWrapper = ref<HTMLDivElement>();
 
 const { data: movieDetail } = useQuery(
     ["movieDetail", selectedMovieId],
@@ -143,5 +151,5 @@ watch(
     }
 );
 
-// onClickOutside(outsideWrapper, (_event) => emit("close"));
+onClickOutside(outsideWrapper, (_event) => emit("close"));
 </script>

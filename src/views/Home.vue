@@ -112,14 +112,17 @@ const filteredMovies = computed(() => {
 });
 
 watch(
-    () => arrivedState.bottom,
+    () => [arrivedState.bottom, route.query],
     () => {
-        if (arrivedState.bottom) page.value++;
-    }
-);
+        if (arrivedState.bottom) {
+            page.value++;
+            return;
+        }
 
-watch(
-    () => route.query,
-    () => (selectedMovieId.value = +route.query.movieId)
+        if (route.query) {
+            selectedMovieId.value = +route.query.movieId;
+            return;
+        }
+    }
 );
 </script>

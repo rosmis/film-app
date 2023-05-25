@@ -57,7 +57,7 @@ import { CalendarNumberOutline } from "@vicons/ionicons5";
 import { Icon } from "@vicons/utils";
 import { truncate } from "lodash";
 import moment from "moment";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { usePosterUrl } from "../composables/usePosterUrl";
 
@@ -69,7 +69,7 @@ const router = useRouter();
 
 const isCardHovered = ref(false);
 
-const posterUrl = usePosterUrl(props.movie.poster_path);
+const posterUrl = computed(() => usePosterUrl(props.movie.poster_path));
 </script>
 
 <style scoped>
