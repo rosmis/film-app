@@ -16,19 +16,33 @@
 
             <ui-wrapper padded class="h-full">
                 <ui-level
-                    class="max-h-screen-md w-full"
+                    class="w-full"
                     space="lg"
-                    vertical-align="top"
+                    :vertical-align="isMobile ? undefined : 'top'"
+                    :class="{
+                        'flex-col fitContent': isMobile,
+                        'max-h-screen-md': !isMobile,
+                    }"
                 >
-                    <ui-level class="flex-col h-full w-1/3" align="center">
+                    <ui-level
+                        class="flex-col h-full"
+                        align="center"
+                        :class="{ 'w-1/3': !isMobile, 'w-2/3': isMobile }"
+                    >
                         <img
                             v-if="posterUrl"
                             :src="posterUrl"
-                            class="max-w-2/3"
+                            :class="{
+                                'max-w-2/3': !isMobile,
+                                'w-full': isMobile,
+                            }"
                         />
                     </ui-level>
 
-                    <ui-wrapper class="h-full w-2/3">
+                    <ui-wrapper
+                        class="h-full"
+                        :class="{ 'w-2/3': !isMobile, 'w-full': isMobile }"
+                    >
                         <ui-level
                             v-if="movieDetail"
                             class="flex-col h-full w-full"
@@ -87,7 +101,9 @@
                         Découvrez d'autres films populaires
                     </h2>
 
-                    <div class="w-full grid gap-4 grid-cols-5">
+                    <div
+                        class="w-full grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-5"
+                    >
                         <MovieCard
                             v-for="(movie, index) in popularMovies"
                             :key="`popular-movie-${index}`"
@@ -109,6 +125,7 @@ import moment from "moment";
 import { computed, onMounted, ref, watch } from "vue";
 import { useQuery } from "vue-query";
 import { useRoute } from "vue-router";
+import { useMobileBreakpoint } from "../composables/useMobileBreakpoints";
 import { useOpenMovieDetailsAnimation } from "../composables/useOpenMovieDetailsAnimation";
 import { paramsOptions } from "../composables/useParamsOptions";
 import { usePosterUrl } from "../composables/usePosterUrl";
@@ -118,6 +135,8 @@ const props = defineProps<{
     selectedMovieId: number;
     popularMovies: any[];
 }>();
+
+const isMobile = useMobileBreakpoint("md");
 
 const emit = defineEmits<{
     (event: "close"): void;
@@ -160,5 +179,8 @@ onClickOutside(outsideWrapper, (_event) => emit("close"));
 <style scoped>
 .movieDetailTransform {
     transform: translate(0, 100%);
+}
+.fitContent {
+    height: fit-content !important;
 }
 </style>

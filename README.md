@@ -15,15 +15,16 @@ Check out the online version by clicking here: https://cute-manatee-eb6bfd.netli
 
 2. Install global dependencies:
 
-```npm install
-
+```
+npm install
 ```
 
 4. Configure the environment variables in the `.env` file: 
 
 5. Serve with hot reload:
 
-```npm run dev
+```
+npm run dev
 ```
 
 ## Recommended IDE Setup
