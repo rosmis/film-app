@@ -1,6 +1,8 @@
 # Vue 3 + TypeScript + Vite
 
-Welcome to my skill test for applying to a front-end job for HelloCSE! 
+Welcome to my skill test for applying to a front-end position at HelloCSE! 
+
+For the pagination of the movie list request, I chose to implement an inifinite scroll feature instead of using regular numbered pagination.
 ## Quick start
 
 1. Clone project:

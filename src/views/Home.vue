@@ -21,25 +21,29 @@
                 </ui-button>
             </ui-level>
 
-            <template v-if="filteredMovies">
+            <template v-if="initialMovies">
                 <div
                     class="w-full grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
                 >
                     <MovieCard
-                        v-for="(movie, index) in filteredMovies"
+                        v-for="(movie, index) in initialMovies"
                         :key="`movie-${index}`"
                         :movie="movie"
                     />
                 </div>
             </template>
 
-            <ui-loader v-else />
+            <ui-loader v-else-if="isFetching" />
+
+            <p class="text-lg w-full text-gray-300">
+                Aucun film ne correspond à votre recherche
+            </p>
 
             <MovieDetails
                 v-if="selectedMovieId"
                 :selected-movie-id="selectedMovieId"
                 :popular-movies="
-                    filteredMovies
+                    initialMovies
                         ?.filter((movie) => movie.id !== selectedMovieId)
                         .slice(0, 5)
                 "
@@ -56,7 +60,8 @@
 import { AnalyticsOutline, StarOutline } from "@vicons/ionicons5";
 import { useScroll } from "@vueuse/core";
 import axios from "axios";
-import { computed, onMounted, ref, watch } from "vue";
+import { debounce } from "lodash";
+import { onMounted, ref, watch } from "vue";
 import { useQuery } from "vue-query";
 import { useRoute, useRouter } from "vue-router";
 import { paramsOptions } from "../composables/useParamsOptions";
@@ -92,11 +97,13 @@ const { arrivedState } = useScroll(document, { offset: { bottom: 450 } });
 
 const selectedFilterType = ref<"popular" | "top_rated">("popular");
 
-useQuery(
+const { refetch, isFetching } = useQuery(
     ["movies", [page, selectedFilterType]],
     () =>
         axios.get(
-            `https://api.themoviedb.org/3/movie/${selectedFilterType.value}?page=${page.value}`,
+            !search.value
+                ? `https://api.themoviedb.org/3/movie/${selectedFilterType.value}?page=${page.value}`
+                : `https://api.themoviedb.org/3/search/movie?query=${search.value}&includepage=1`,
             paramsOptions
         ),
     {
@@ -112,15 +119,10 @@ useQuery(
     }
 );
 
-const filteredMovies = computed<Movie[] | undefined>(() => {
-    if (!initialMovies.value) return undefined;
-
-    if (!search.value) return initialMovies.value;
-
-    return initialMovies.value.filter((movie) =>
-        movie.title.toLowerCase().includes(search.value!)
-    );
-});
+watch(
+    search,
+    debounce(() => refetch.value(), 200)
+);
 
 watch(
     () => [arrivedState.bottom, route.query],
