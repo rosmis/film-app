@@ -3,8 +3,7 @@
         class="flex flex-col bg-black/15 inset-0 z-20 backdrop-filter backdrop-blur-sm fixed"
     >
         <div
-            screen="art"
-            class="bg-gray-800 rounded-t-2xl w-full top-8 right-0 bottom-0 left-0 absolute overflow-y-auto"
+            class="bg-gray-800 rounded-t-2xl w-full top-8 right-0 bottom-0 left-0 absolute gs_to_top overflow-y-auto movieDetailTransform"
             ref="outsideWrapper"
         >
             <ui-level align="right" class="w-full p-4 top-0 z-30 sticky">
@@ -107,9 +106,10 @@ import { Icon } from "@vicons/utils";
 import { onClickOutside } from "@vueuse/core";
 import axios from "axios";
 import moment from "moment";
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useQuery } from "vue-query";
 import { useRoute } from "vue-router";
+import { useOpenMovieDetailsAnimation } from "../composables/useOpenMovieDetailsAnimation";
 import { paramsOptions } from "../composables/useParamsOptions";
 import { usePosterUrl } from "../composables/usePosterUrl";
 import { MovieDetailed } from "../types/movie";
@@ -124,6 +124,8 @@ const props = defineProps<{
 const emit = defineEmits<{
     (event: "close"): void;
 }>();
+
+onMounted(() => useOpenMovieDetailsAnimation().play().timeScale(2));
 
 const posterUrl = ref<string | undefined>(undefined);
 const selectedMovieId = ref<number>(props.selectedMovieId);
@@ -154,3 +156,9 @@ watch(
 
 onClickOutside(outsideWrapper, (_event) => emit("close"));
 </script>
+
+<style scoped>
+.movieDetailTransform {
+    transform: translate(0, 100%);
+}
+</style>

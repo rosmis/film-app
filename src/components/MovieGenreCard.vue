@@ -1,5 +1,5 @@
 <template>
-    <ui-wrapper padded="sm" rounded color="white">
+    <ui-wrapper padded="squared" rounded="sm" color="white">
         <ui-level class="flex-col">
             <p>{{ genre.name }}</p>
         </ui-level>
