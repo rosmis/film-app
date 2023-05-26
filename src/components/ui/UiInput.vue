@@ -13,7 +13,12 @@
                 :value="modelValue"
                 class="bg-transparent outline-none placeholder-[#dfdaae] h-10 text-[#dfdaae] w-full fontSize"
                 @keyup.enter="emit('enter')"
-                @input="$emit('update:modelValue', $event.target!.value)"
+                @input="
+                    $emit(
+                        'update:modelValue',
+                        ($event.target as HTMLInputElement).value
+                    )
+                "
             />
         </ui-level>
     </div>
