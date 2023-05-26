@@ -114,8 +114,6 @@ import { paramsOptions } from "../composables/useParamsOptions";
 import { usePosterUrl } from "../composables/usePosterUrl";
 import { MovieDetailed } from "../types/movie";
 
-const route = useRoute();
-
 const props = defineProps<{
     selectedMovieId: number;
     popularMovies: any[];
@@ -124,6 +122,8 @@ const props = defineProps<{
 const emit = defineEmits<{
     (event: "close"): void;
 }>();
+
+const route = useRoute();
 
 onMounted(() => useOpenMovieDetailsAnimation().play().timeScale(2));
 

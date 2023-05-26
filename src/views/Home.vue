@@ -7,9 +7,8 @@
                 <ui-button
                     @click="
                         selectedFilterType =
-                            selectedFilterType === 'popular'
-                                ? 'top_rated'
-                                : 'popular';
+                            selectedFilterTypeTitleDict[selectedFilterType]
+                                .type;
                         page = 1;
                     "
                 >
@@ -18,11 +17,7 @@
                         <AnalyticsOutline v-else />
                     </template>
 
-                    {{
-                        selectedFilterType === "popular"
-                            ? "Trier par la meilleure note"
-                            : "Trier par popularité"
-                    }}
+                    {{ selectedFilterTypeTitleDict[selectedFilterType].title }}
                 </ui-button>
             </ui-level>
 
@@ -77,6 +72,19 @@ const page = ref(1);
 
 const initialMovies = ref<Movie[] | undefined>(undefined);
 const selectedMovieId = ref<number | undefined>(undefined);
+
+const selectedFilterTypeTitleDict = ref<
+    Record<string, { type: "top_rated" | "popular"; title: string }>
+>({
+    popular: {
+        type: "top_rated",
+        title: "Trier par la meilleure note",
+    },
+    top_rated: {
+        type: "popular",
+        title: "Trier par popularité",
+    },
+});
 
 const { arrivedState } = useScroll(document, { offset: { bottom: 450 } });
 
