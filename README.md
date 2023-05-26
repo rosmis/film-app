@@ -9,6 +9,10 @@ Welcome to my skill test for applying to a front-end job for HelloCSE!
 git clone https://github.com/rosmis/film-app.git
 ```
 
+OR
+
+Check out the online version by clicking here: https://cute-manatee-eb6bfd.netlify.app/
+
 2. Install global dependencies:
 
 ```npm install
