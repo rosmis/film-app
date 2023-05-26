@@ -129,7 +129,7 @@ watch(
         }
 
         if (route.query) {
-            selectedMovieId.value = +route.query.movieId;
+            selectedMovieId.value = +route.query.movieId!;
             return;
         }
     }
